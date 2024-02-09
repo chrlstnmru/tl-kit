@@ -1,24 +1,22 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { trpc } from '$lib/trpc/client';
+	import { useSvelteTRPC } from '$lib/svelte-query';
 
-	let greeting = 'press the button to load data';
-	let loading = false;
+	export let data;
 
-	const loadData = async () => {
-		loading = true;
-		greeting = await trpc($page).greet.hello.query();
-		loading = false;
-	};
+	const trpc = useSvelteTRPC();
+	const prefetchedMsg = data.prefetchedMsg();
+	const goodbye = trpc.greet.goodbye.createQuery();
 </script>
 
 <h1>Welcome to SvelteKit</h1>
 <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-<br />
 
-{#if loading}
+<p>Prefetched Message: {$prefetchedMsg.data}</p>
+
+{#if $goodbye.isPending}
 	<p>Loading...</p>
+{:else if $goodbye.data}
+	<p>{$goodbye.data}</p>
 {:else}
-	<p>{greeting}</p>
+	<p>{$goodbye.error?.message}</p>
 {/if}
-<button on:click={loadData}>Load Data</button>
