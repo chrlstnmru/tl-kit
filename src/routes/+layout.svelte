@@ -1,9 +1,10 @@
 <script lang="ts">
+	import '../app.pcss';
 	import { SvelteQueryProvider } from '$lib/svelte-query';
 
 	export let data;
 </script>
 
-<SvelteQueryProvider queryClient={data.queryClient} trpcClient={data.trpcClient}>
+<SvelteQueryProvider queryclient={data.queryClient} trpcclient={data.trpcClient}>
 	<slot />
 </SvelteQueryProvider>
