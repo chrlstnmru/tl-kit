@@ -12,7 +12,8 @@
 		"format": "prettier --write .",
 		"db:generate": "pnpm drizzle-kit generate:sqlite",
 		"db:push": "pnpm drizzle-kit push:sqlite",
-		"db:pull": "pnpm drizzle-kit introspect:sqlite"
+		"db:pull": "pnpm drizzle-kit introspect:sqlite",
+		"db:studio": "pnpm drizzle-kit studio"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",
