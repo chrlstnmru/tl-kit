@@ -72,3 +72,40 @@ export async function authCallbackValidationWrapper(fn: () => Promise<OAuthSelec
 		return error(500, 'Internal server error');
 	}
 }
+
+export async function validateSession(event: RequestEvent) {
+	const sessionId = event.cookies.get(auth.sessionCookieName);
+
+	if (!sessionId) {
+		event.locals.user = null;
+		event.locals.session = null;
+		return;
+	}
+
+	try {
+		const { session, user } = await auth.validateSession(sessionId);
+
+		if (session && session.fresh) {
+			const sessionCookie = auth.createSessionCookie(session.id);
+			// sveltekit types deviates from the de-facto standard
+			// you can use 'as any' too
+			event.cookies.set(sessionCookie.name, sessionCookie.value, {
+				...sessionCookie.attributes,
+				path: '/'
+			});
+		}
+		if (!session) {
+			const sessionCookie = auth.createBlankSessionCookie();
+			event.cookies.set(sessionCookie.name, sessionCookie.value, {
+				...sessionCookie.attributes,
+				path: '/'
+			});
+		}
+		event.locals.user = user;
+		event.locals.session = session;
+	} catch (err) {
+		console.error(err);
+		event.locals.user = null;
+		event.locals.session = null;
+	}
+}

@@ -6,5 +6,6 @@ const authProviders = {
 	google: googleAuthProvider()
 };
 export type AuthProvider = keyof typeof authProviders;
+export const authProviderList = Object.keys(authProviders) as AuthProvider[];
 
 export default authProviders;

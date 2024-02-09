@@ -16,7 +16,7 @@ function githubAuthProvider() {
 	const createAuthUrl = async (event: RequestEvent) => {
 		const state = generateState();
 		const url = await github.createAuthorizationURL(state);
-		event.cookies.set(githubStateCookie, state, { path: '/', ...oauthDefaultCookieAttributes });
+		event.cookies.set(githubStateCookie, state, { ...oauthDefaultCookieAttributes, path: '/' });
 
 		return url;
 	};
@@ -33,11 +33,12 @@ function githubAuthProvider() {
 			const response = await fetch('https://api.github.com/user', {
 				headers: {
 					Authorization: `Bearer ${accessToken}`
-				}
+				},
+				credentials: 'include'
 			});
 			const result = await response.json();
 
-			const account = await createOAuthUser('github', result.id);
+			const account = await createOAuthUser('github', result.id, { username: result.login });
 			return account;
 		});
 

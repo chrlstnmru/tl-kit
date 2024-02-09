@@ -22,7 +22,7 @@ function googleAuthProvider() {
 	const createAuthUrl = async (event: RequestEvent) => {
 		const state = generateState();
 		const url = await google.createAuthorizationURL(state, googleCodeVerifier);
-		event.cookies.set(googleStateCookie, state, { path: '/', ...oauthDefaultCookieAttributes });
+		event.cookies.set(googleStateCookie, state, { ...oauthDefaultCookieAttributes, path: '/' });
 		return url;
 	};
 

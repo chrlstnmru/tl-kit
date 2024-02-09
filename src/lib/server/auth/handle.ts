@@ -1,4 +1,5 @@
-import { redirect, type Handle, type RequestEvent } from '@sveltejs/kit';
+import { redirect, type Handle } from '@sveltejs/kit';
+import { validateSession } from './helpers';
 import authProviders, { type AuthProvider } from './providers';
 import { auth } from './root';
 
@@ -18,8 +19,8 @@ export const authHandle: Handle = async ({ event, resolve }) => {
 		await auth.invalidateSession(event.locals.session.id);
 		const sessionCookie = auth.createBlankSessionCookie();
 		event.cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: '.',
-			...sessionCookie.attributes
+			...sessionCookie.attributes,
+			path: '/'
 		});
 
 		return redirect(302, '/');
@@ -39,8 +40,8 @@ export const authHandle: Handle = async ({ event, resolve }) => {
 	if (pathname.endsWith('/callback')) {
 		const sessionCookie = await provider.validateAuthCallback(event);
 		event.cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: '/',
-			...sessionCookie.attributes
+			...sessionCookie.attributes,
+			path: '/'
 		});
 		return redirect(302, '/');
 	}
@@ -49,32 +50,3 @@ export const authHandle: Handle = async ({ event, resolve }) => {
 	const authUrl = await provider.createAuthUrl(event);
 	return redirect(302, authUrl);
 };
-
-async function validateSession(event: RequestEvent) {
-	const sessionId = event.cookies.get(auth.sessionCookieName);
-	if (!sessionId) {
-		event.locals.user = null;
-		event.locals.session = null;
-		return;
-	}
-
-	const { session, user } = await auth.validateSession(sessionId);
-	if (session && session.fresh) {
-		const sessionCookie = auth.createSessionCookie(session.id);
-		// sveltekit types deviates from the de-facto standard
-		// you can use 'as any' too
-		event.cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: '.',
-			...sessionCookie.attributes
-		});
-	}
-	if (!session) {
-		const sessionCookie = auth.createBlankSessionCookie();
-		event.cookies.set(sessionCookie.name, sessionCookie.value, {
-			path: '.',
-			...sessionCookie.attributes
-		});
-	}
-	event.locals.user = user;
-	event.locals.session = session;
-}

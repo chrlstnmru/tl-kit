@@ -1,7 +1,8 @@
 import { primaryKey, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const userTable = sqliteTable('user', {
-	id: text('id').notNull().primaryKey()
+	id: text('id').notNull().primaryKey(),
+	username: text('username')
 	// ... other user attributes
 });
 export type UserInsert = typeof userTable.$inferInsert;
@@ -10,7 +11,7 @@ export const sessionTable = sqliteTable('session', {
 	id: text('id').notNull().primaryKey(),
 	userId: text('user_id')
 		.notNull()
-		.references(() => userTable.id),
+		.references(() => userTable.id, { onDelete: 'cascade' }),
 	expiresAt: integer('expires_at').notNull()
 });
 
@@ -21,7 +22,7 @@ export const oauthTable = sqliteTable(
 		providerUserId: text('provider_user_id').notNull(),
 		userId: text('user_id')
 			.notNull()
-			.references(() => userTable.id)
+			.references(() => userTable.id, { onDelete: 'cascade' })
 	},
 	(table) => ({
 		pk: primaryKey({ columns: [table.providerId, table.providerUserId] })

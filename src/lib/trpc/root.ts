@@ -1,7 +1,7 @@
 import { TRPCError, initTRPC } from '@trpc/server';
 import type { TRPCContext } from './context';
 
-export const t = initTRPC.context<TRPCContext>().create();
+const t = initTRPC.context<TRPCContext>().create();
 
 export const createTRPCRouter = t.router;
 export const middleware = t.middleware;

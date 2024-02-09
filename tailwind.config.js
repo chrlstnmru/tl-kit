@@ -3,7 +3,11 @@ export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 
 	theme: {
-		extend: {}
+		extend: {
+			fontFamily: {
+				overpass: ['Overpass', 'sans-serif']
+			}
+		}
 	},
 
 	plugins: []
