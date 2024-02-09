@@ -2,7 +2,7 @@
   <img src="https://media.discordapp.net/attachments/1150257501602848808/1205544303347241001/tl-kit.png?ex=65d8c19f&is=65c64c9f&hm=36ec606fe492caed9bb3a18ee0d47844b41675f9fbe32c0ea90fa9434fc940e1&=&format=webp&quality=lossless" width="400" alt="Logo for TL Kit">
 </div>
 <p align="center">
-  A boilerplate SvelteKit app for end-to-end typesafe API.
+  A boilerplate SvelteKit app for end-to-end typesafe API endpoints.
 </p>
 
 ## About
