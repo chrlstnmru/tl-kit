@@ -1,3 +1,4 @@
+import { authHandle } from '$lib/server/auth/handle';
 import { createTRPCContext } from '$lib/trpc/context';
 import { trpcRouter } from '$lib/trpc/router';
 import type { Handle } from '@sveltejs/kit';
@@ -13,4 +14,4 @@ const trpcHandle: Handle = createTRPCHandle({
 	createContext: createTRPCContext
 });
 
-export const handle: Handle = sequence(trpcHandle, sveltekitHandle);
+export const handle: Handle = sequence(authHandle, trpcHandle, sveltekitHandle);
