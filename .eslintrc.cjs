@@ -5,7 +5,7 @@ module.exports = {
 		'eslint:recommended',
 		'plugin:@typescript-eslint/recommended',
 		'plugin:svelte/recommended',
-		'plugin:import/recommended',
+		'plugin:import/warnings',
 		'plugin:import/typescript',
 		'prettier'
 	],
