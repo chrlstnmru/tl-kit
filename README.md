@@ -28,4 +28,14 @@ pnpm install
 
 Duplicate the `.env.example` and rename it to `.env`. Make sure to fill out the environment variables.
 
+Create a `database/sqlite.db` file.
+> Feel  free to use any database you want. Follow the [database guide](https://lucia-auth.com/database/) for more info.
+
+Populate the database by running the command:
+
+```bash
+pnpm db:generate
+pnpm db:push
+```
+
 You can add more auth provider by following the guide on [Lucia](https://lucia-auth.com/guides).
