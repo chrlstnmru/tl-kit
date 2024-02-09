@@ -5,6 +5,6 @@
 	export let data;
 </script>
 
-<SvelteQueryProvider queryclient={data.queryClient} trpcclient={data.trpcClient}>
+<SvelteQueryProvider queryClient={data.queryClient} trpcClient={data.trpcClient}>
 	<slot />
 </SvelteQueryProvider>

@@ -6,6 +6,7 @@
 	const trpc = useSvelteTRPC();
 	const prefetchedMsg = data.prefetchedMsg();
 	const goodbye = trpc.greet.goodbye.createQuery();
+	const secret = trpc.greet.secret.createQuery();
 </script>
 
 <h1>Welcome to SvelteKit</h1>
@@ -19,4 +20,12 @@
 	<p>{$goodbye.data}</p>
 {:else}
 	<p>{$goodbye.error?.message}</p>
+{/if}
+
+{#if $secret.isPending}
+	<p>Loading</p>
+{:else if $secret.data}
+	<p>{$secret.data}</p>
+{:else}
+	<p>{$secret.error?.message}</p>
 {/if}

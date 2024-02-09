@@ -6,7 +6,7 @@ import type { inferAsyncReturnType } from '@trpc/server';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function createTRPCContext(event: RequestEvent) {
 	return {
-		// context information
+		user: event.locals.user
 	};
 }
 
